@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "settings": {
+      "title": "Settings",
+      "description": "Global application settings including exchange rates",
+      "type": "object",
+      "properties": {
+        "rates": {
+          "type": "object",
+          "description": "Exchange rates for different currencies"
+        },
+        "updatedAt": {
+          "type": "object",
+          "description": "Firestore Timestamp"
+        },
+        "updatedBy": {
+          "type": "string"
+        }
+      },
+      "required": ["rates", "updatedAt"]
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Contact messages from users",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "message": { "type": "string" },
+        "createdAt": { "type": "object", "description": "Firestore Timestamp" },
+        "status": { "type": "string", "enum": ["new", "read", "archived"] }
+      },
+      "required": ["name", "message", "createdAt"]
+    },
+    "users": {
+      "title": "Users",
+      "description": "User profiles and roles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "displayName": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    },
+    "admins": {
+      "title": "Admins",
+      "description": "Explicit list of admin UIDs for security rules",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    },
+    "scam_reports": {
+      "title": "Scam Reports",
+      "description": "Reports of fraudulent activity or suspicious numbers",
+      "type": "object",
+      "properties": {
+        "number": { "type": "string", "description": "The reported phone number" },
+        "name": { "type": "string", "description": "Name or alias of the reported person" },
+        "reason": { "type": "string", "description": "Description of the scam" },
+        "date": { "type": "object", "description": "Firestore Timestamp" },
+        "status": { "type": "string", "enum": ["verified", "pending", "suspicious"] },
+        "reporterUid": { "type": "string", "description": "UID of the user who reported" }
+      },
+      "required": ["number", "reason", "date", "status"]
+    }
+  },
+  "firestore": {
+    "/settings/global": {
+      "schema": "settings",
+      "description": "Global configuration document"
+    },
+    "/messages/{messageId}": {
+      "schema": "messages",
+      "description": "Collection of contact messages"
+    },
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "Collection of user profiles"
+    },
+    "/admins/{uid}": {
+      "schema": "admins",
+      "description": "Collection of administrative users"
+    },
+    "/scam_reports/{reportId}": {
+      "schema": "scam_reports",
+      "description": "Collection of scam reports"
+    }
+  }
+}
